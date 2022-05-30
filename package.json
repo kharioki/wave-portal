@@ -1,0 +1,23 @@
+{
+  "name": "wave-portal",
+  "version": "1.0.0",
+  "description": "a web3 app with solidity",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kharioki/wave-portal.git"
+  },
+  "keywords": [
+    "hardhat",
+    "solidity"
+  ],
+  "author": "kharioki",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kharioki/wave-portal/issues"
+  },
+  "homepage": "https://github.com/kharioki/wave-portal#readme"
+}
