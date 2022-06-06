@@ -1,27 +1,45 @@
 const main = async () => {
   const [owner, randomPerson] = await hre.ethers.getSigners();
   const waveContractFactory = await hre.ethers.getContractFactory("WavePortal");
-  const waveContract = await waveContractFactory.deploy();
+  const waveContract = await waveContractFactory.deploy({
+    value: hre.ethers.utils.parseEther("0.1"),
+  });
   await waveContract.deployed();
 
   console.log(`Deployed WavePortal at ${waveContract.address}`);
-  console.log(`Owner: ${owner.address}`);
+
+  /*
+   * Get Contract balance
+   */
+  let contractBalance = await hre.ethers.provider.getBalance(
+    waveContract.address
+  );
+  console.log(
+    "Contract balance:",
+    hre.ethers.utils.formatEther(contractBalance)
+  );
+
+  /*
+   * Send Wave
+   */
+  let waveTxn = await waveContract.createWave('A message!!!');
+  await waveTxn.wait();
+
+  waveTxn = await waveContract.connect(randomPerson).createWave('Another message!!!');
+  await waveTxn.wait();
+
+  /*
+   * Get Contract balance to see what happened!
+   */
+  contractBalance = await hre.ethers.provider.getBalance(waveContract.address);
+  console.log(
+    "Contract balance:",
+    hre.ethers.utils.formatEther(contractBalance)
+  );
 
   let waveCount;
-  let wave;
   waveCount = await waveContract.getTotalWaves();
-
-  let waveTxn = await waveContract.createWave();
-  await waveTxn.wait();
-
-  waveCount = await waveContract.getTotalWaves();
-
-  waveTxn = await waveContract.connect(randomPerson).createWave();
-  await waveTxn.wait();
-
-  waveCount = await waveContract.getTotalWaves();
-
-  wave = await waveContract.getWave(0);
+  console.log(`Total Waves: ${waveCount.toNumber()}`);
 };
 
 const runMain = async () => {

@@ -1,12 +1,9 @@
 const main = async () => {
-  const [deployer] = await hre.ethers.getSigners();
-  const accountBalance = await deployer.getBalance();
-
-  console.log(`Deployer: ${deployer.address}`);
-  console.log(`Deployer balance: ${accountBalance.toString()}`);
-
   const waveContractFactory = await hre.ethers.getContractFactory("WavePortal");
-  const waveContract = await waveContractFactory.deploy();
+  const waveContract = await waveContractFactory.deploy({
+    value: hre.ethers.utils.parseEther("0.001"),
+  });
+
   await waveContract.deployed();
 
   console.log(`Deployed WavePortal at ${waveContract.address}`);
